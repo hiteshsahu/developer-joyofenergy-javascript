@@ -1,15 +1,15 @@
-# Welcome to PowerDale
+# Welcome to PowerDale 🏙️
 
 PowerDale is a small town with around 100 residents. Most houses have a smart meter installed that can save and send
 information about how much power a house is drawing/using.
 
 There are three major providers of energy in town that charge different amounts for the power they supply.
 
-- _Dr Evil's Dark Energy_
-- _The Green Eco_
-- _Power for Everyone_
+  1. _Dr Evil's Dark Energy_
+  2. _The Green Eco_
+  3. _Power for Everyone_
 
-# Introducing JOI Energy
+# Introducing JOI Energy ⚡
 
 JOI Energy is a new start-up in the energy industry. Rather than selling energy they want to differentiate themselves
 from the market by recording their customers' energy usage from their smart meters and recommending the best supplier to
@@ -22,7 +22,7 @@ Unfortunately, two members of the team are on annual leave, and another one has 
 another ThoughtWorker to progress with the current user stories on the story wall. This is your chance to make an impact
 on the business, improve the code base and deliver value.
 
-## Story Wall
+## Story Wall 📊
 
 At JOI energy the development team use a story wall or Kanban board to keep track of features or "stories" as they are
 worked on.
@@ -40,7 +40,7 @@ The wall you will be working from today has 7 columns:
 Examples can be found
 here [https://leankit.com/learn/kanban/kanban-board/](https://leankit.com/learn/kanban/kanban-board/)
 
-## Users
+## Users 👪
 
 To trial the new JOI software 5 people from the JOI accounts team have agreed to test the service and share their energy
 data.
@@ -55,22 +55,22 @@ data.
 
 These values are used in the code and in the following examples too.
 
-## Requirements
-
-The project requires [Node v14](https://nodejs.org/).
-
-## Useful Node commands
+---------------
+# Useful Node commands 🛠️
 
 The project makes use of node and its package manager to help you out carrying some common tasks such as building the
 project or running it.
 
-### Install dependencies
+## Requirements
+The project requires [Node v14](https://nodejs.org/).
+
+## 🔵 Install dependencies
 
 ```console
 $ npm install
 ```
 
-### Run the tests
+## 🟠 Run the tests
 
 There are two options to run the tests
 
@@ -86,7 +86,7 @@ There are two options to run the tests
   $ npm run test-watch
   ```
 
-### Run the application
+## 🟢 Run the application
 
 Run the application which will be listening on port `8080`. There are two ways to run the application.
 
@@ -102,13 +102,15 @@ Run the application which will be listening on port `8080`. There are two ways t
   $ npm run dev
   ```
 
-## API
+---------------------
+
+# API 🚀
 
 Below is a list of API endpoints with their respective input and output. Please note that the application needs to be
 running for the following endpoints to work. For more information about how to run the application, please refer
 to [run the application](#run-the-application) section above.
 
-### Store readings
+## 1. Store readings
 
 Endpoint
 
@@ -149,9 +151,13 @@ Example readings
 | `2020-11-29 8:04` |      1606637040 |         0.0191 |
 
 In the above example, the smart meter sampled readings, in `kW`, every minute. Note that the reading is in `kW` and
-not `kWH`, which means that each reading represents the consumption at the reading time. If no power is being consumed
+not `kWH`, which means that each reading represents the consumption at the reading time. 
+
+If no power is being consumed
 at the time of reading, then the reading value will be `0`. Given that `0` may introduce new challenges, we can assume
-that there is always some consumption, and we will never have a `0` reading value. These readings are then sent by the
+that there is always some consumption, and we will never have a `0` reading value.
+
+ These readings are then sent by the
 smart meter to the application using REST. There is a service in the application that calculates the `kWH` from these
 readings.
 
@@ -218,7 +224,7 @@ Example output
 ]
 ```
 
-### Get Stored Readings
+## 2. Get Stored Readings
 
 Endpoint
 
@@ -289,7 +295,7 @@ Example output
 ]
 ```
 
-### View Current Price Plan and Compare Usage Cost Against all Price Plans
+## 3. View Current Price Plan and Compare Usage Cost Against all Price Plans
 
 Endpoint
 
@@ -328,7 +334,7 @@ Example output
 }
 ```
 
-### View Recommended Price Plans for Usage
+## 4. View Recommended Price Plans for Usage
 
 Endpoint
 
