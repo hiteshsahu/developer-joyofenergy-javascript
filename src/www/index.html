@@ -48,6 +48,7 @@
             margin-right: auto;
             background-color: #ffffff;
             box-shadow: 10px 10px 5px grey;
+            border-radius: 7px;
         }
 
         .api-list {
@@ -64,8 +65,10 @@
             <label for="meters">Choose a Meter: </label>
             <select id="meters"></select>
             <p id="selected-meter">Selected Meter</p>
-            <h3>Available API Routes are:</h3>
+            <h3>Available API 💡</h3>
             <p id="api-list" />
+            <h3>Experimental API ⚗️</h3>
+            <p id="beta-api" />
         </div>
 </body>
 
@@ -74,6 +77,7 @@
     var smartMeterId = "smart-meter-1"
     const select = document.getElementById('meters');
     const apiList = document.getElementById("api-list")
+    const newAPI = document.getElementById("beta-api")
     const selectedMeter = document.getElementById("selected-meter")
 
     getData(baseURL + "/meters/")
@@ -96,13 +100,17 @@
     showAPIList = () => {
         let selection = select.options[select.selectedIndex]
         smartMeterId = selection.value
-        selectedMeter.innerHTML = "Selected: "+ select.options[select.selectedIndex].text + "(" + smartMeterId + ")"
+        selectedMeter.innerHTML = "Selected: " + select.options[select.selectedIndex].text + "(" + smartMeterId + ")"
         apiList.innerHTML =
             "<ol>" +
             "<li><a class =\"api\" href=\"#\" onclick=\"return storeReadings();\">Store Readings</a><br/>(POST: /readings/store)</li>" +
             "<li><a class =\"api\" target=\"_blank\" href=" + baseURL + "/readings/read/" + smartMeterId + ">Read Readings</a><br/>(GET: /readings/read/:smartMeterId)</li>" +
             "<li><a class =\"api\" target=\"_blank\" href=" + baseURL + "/price-plans/recommend/" + smartMeterId + ">Recommend Plans</a><br/>(GET: /price-plans/recommend/:smartMeterId)</li>" +
             "<li><a class =\"api\" target=\"_blank\" href=" + baseURL + "/price-plans/compare-all/" + smartMeterId + ">Compare Plans</a><br/>(GET: /price-plans/compare-all/:smartMeterId)</li>" +
+            "<ol>"
+        newAPI.innerHTML =
+            "<ol>" +
+            "<li><a class =\"api\" target=\"_blank\" href=" + baseURL + "/meters/" + ">Get All Meters</a><br/>(GET:  /meters/) </li>" +
             "<ol>"
     }
 
