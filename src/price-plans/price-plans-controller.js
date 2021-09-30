@@ -1,6 +1,12 @@
 const { pricePlans } = require("./price-plans");
 const { usageForAllPricePlans } = require("../usage/usage");
 
+/**
+ * Compare and recommned best plan for customer
+ * @param {*} getReadings 
+ * @param {*} req 
+ * @returns : 
+ */
 const recommend = (getReadings, req) => {
     const meter = req.params.smartMeterId;
     const pricePlanComparisons = usageForAllPricePlans(pricePlans, getReadings(meter)).sort((a, b) => extractCost(a) - extractCost(b))
@@ -15,6 +21,12 @@ const extractCost = (cost) => {
     return value
 }
 
+/**
+ * Compare cost for avialble plans in market 
+ * @param {*} getData 
+ * @param {*} req 
+ * @returns : 
+ */
 const compare = (getData, req) => {
     const meter = req.params.smartMeterId;
     const pricePlanComparisons = usageForAllPricePlans(pricePlans, getData(meter));;

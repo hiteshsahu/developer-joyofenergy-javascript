@@ -7,16 +7,18 @@ const { recommend, compare } = require("./price-plans/price-plans-controller");
 const app = express();
 app.use(express.json());
 
+// Below routes Create & Read meter readings"`
 const { getReadings, setReadings } = readings(readingsData);
-
-app.get("/readings/read/:smartMeterId", (req, res) => {
-    res.send(read(getReadings, req));
-});
 
 app.post("/readings/store", (req, res) => {
     res.send(store(setReadings, req));
 });
 
+app.get("/readings/read/:smartMeterId", (req, res) => {
+    res.send(read(getReadings, req));
+});
+
+// Below routes Compare and Recommend Connection"`
 app.get("/price-plans/recommend/:smartMeterId", (req, res) => {
     res.send(recommend(getReadings, req));
 });
@@ -24,6 +26,9 @@ app.get("/price-plans/recommend/:smartMeterId", (req, res) => {
 app.get("/price-plans/compare-all/:smartMeterId", (req, res) => {
     res.send(compare(getReadings, req));
 });
+
+// Show Static site on home
+app.use(express.static(__dirname + '/www'));
 
 const port = process.env.PORT || 8080;
 app.listen(port);

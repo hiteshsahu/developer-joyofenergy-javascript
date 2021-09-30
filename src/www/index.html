@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en-US">
+
+<head>
+    <title>JOI Energy ⚡</title>
+    <link rel="shortcut icon" type="image/jpeg" href="https://images.pexels.com/photos/577514/pexels-photo-577514.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Armata&display=swap');
+
+        body {
+            background: #e0e5ec;
+            font-family: 'Armata', sans-serif;
+            text-align: center;
+        }
+
+        li {
+            margin-bottom: 10
+        }
+
+        a.api:link {
+            color: #0b72bb;
+        }
+
+        a.api:visited {
+            color: #0b72bb;
+        }
+
+        a.api:hover {
+            color: #03c991;
+        }
+
+        .content {
+            width: 500px;
+            margin: 20px;
+            padding: 15px;
+            text-align: start;
+            align-items: center;
+            margin-left: auto;
+            margin-right: auto;
+            background-color: #ffffff;
+            box-shadow: 10px 10px 5px grey;
+        }
+
+        .api-list {
+            font-size: 20px;
+            color: #676767;
+        }
+    </style>
+    <link rel="shortcut icon"
+        href="https://images.pexels.com/photos/4899925/pexels-photo-4899925.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500">
+</head>
+
+<body>
+
+    <h2>Welcome to JOI Energy REST API ⚡ </h1>
+        <div class="content">
+            <h3>Available API Routes are:</h3>
+
+            <p id="api-list" />
+        </div>
+</body>
+
+<script>
+    const baseURL = window.location.origin
+    const smartMeterId = "smart-meter-0"
+    document.getElementById("api-list").innerHTML =
+        "<ol>" +
+        "<li><a class =\"api\" href=" + baseURL + "/readings/store" + ">Store Readings</a><br/>(/readings/store)</li>" +
+        "<li><a class =\"api\" href=" + baseURL + "/readings/read/" + smartMeterId + ">Read Readings</a><br/>(/readings/read/:smartMeterId)</li>" +
+        "<li><a class =\"api\" href=" + baseURL + "/price-plans/recommend/" + smartMeterId + ">Recommend Plans</a><br/>(/price-plans/recommend/:smartMeterId)</li>" +
+        "<li><a class =\"api\" href=" + baseURL + "/price-plans/compare-all/" + smartMeterId + ">Compare Plans</a><br/>(/price-plans/compare-all/:smartMeterId)</li>" +
+        "<ol>"
+</script>
