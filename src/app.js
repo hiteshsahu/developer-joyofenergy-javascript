@@ -4,12 +4,12 @@ const { readingsData } = require("./readings/readings.data");
 const { read, store } = require("./readings/readings-controller");
 const { recommend, compare } = require("./price-plans/price-plans-controller");
 
+const { getReadings, setReadings } = readings(readingsData);
+
 const app = express();
 app.use(express.json());
 
-// Below routes Create & Read meter readings"`
-const { getReadings, setReadings } = readings(readingsData);
-
+// Below routes Create & Read meter readings
 app.post("/readings/store", (req, res) => {
     res.send(store(setReadings, req));
 });

@@ -15,12 +15,9 @@ JOI Energy is a new start-up in the energy industry. Rather than selling energy 
 from the market by recording their customers' energy usage from their smart meters and recommending the best supplier to
 meet their needs.
 
-You have been placed into their development team, whose current goal is to produce an API which their customers and
-smart meters will interact with.
+You have been placed into their development team, whose current goal is to produce an API which their customers and smart meters will interact with.
 
-Unfortunately, two members of the team are on annual leave, and another one has called in sick! You are left with
-another ThoughtWorker to progress with the current user stories on the story wall. This is your chance to make an impact
-on the business, improve the code base and deliver value.
+Unfortunately, two members of the team are on annual leave, and another one has called in sick! You are left with another ThoughtWorker to progress with the current user stories on the story wall. This is your chance to make an impact on the business, improve the code base and deliver value.
 
 ## Story Wall 📊
 
@@ -106,8 +103,11 @@ Run the application which will be listening on port `8080`. There are two ways t
 
 # API 🚀
 
-Below is a list of API endpoints with their respective input and output. Please note that the application needs to be
-running for the following endpoints to work. For more information about how to run the application, please refer
+Below is a list of API endpoints with their respective input and output. 
+
+![JIO Energy](./img/Dashboard.jpg)
+
+Please note that the application needs to be running for the following endpoints to work. For more information about how to run the application, please refer
 to [run the application](#run-the-application) section above.
 
 ## 1. Store readings
