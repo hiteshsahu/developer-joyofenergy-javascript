@@ -2,6 +2,9 @@
 <html>
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>JOI Energy ⚡</title>
     <link rel="shortcut icon" type="image/jpeg"
         href="https://images.pexels.com/photos/577514/pexels-photo-577514.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" />
@@ -23,6 +26,7 @@
         }
 
         a.api:link {
+            font-size: 21px;
             color: #0b72bb;
         }
 
@@ -47,7 +51,7 @@
         }
 
         .api-list {
-            font-size: 20px;
+            font-size: 17px;
             color: #676767;
         }
     </style>
@@ -57,6 +61,9 @@
 <body>
     <h2>Welcome to JOI Energy REST API ⚡ </h1>
         <div class="content">
+            <label for="meters">Choose a Meter: </label>
+            <select id="meters"></select>
+            <p id="selected-meter">Selected Meter</p>
             <h3>Available API Routes are:</h3>
             <p id="api-list" />
         </div>
@@ -64,14 +71,40 @@
 
 <script>
     const baseURL = window.location.origin
-    const smartMeterId = "smart-meter-0"
-    document.getElementById("api-list").innerHTML =
-        "<ol>" +
-        "<li><a class =\"api\" href=\"#\" onclick=\"return storeReadings();\">Store Readings</a><br/>(/readings/store)</li>" +
-        "<li><a class =\"api\" href=" + baseURL + "/readings/read/" + smartMeterId + ">Read Readings</a><br/>(/readings/read/:smartMeterId)</li>" +
-        "<li><a class =\"api\" href=" + baseURL + "/price-plans/recommend/" + smartMeterId + ">Recommend Plans</a><br/>(/price-plans/recommend/:smartMeterId)</li>" +
-        "<li><a class =\"api\" href=" + baseURL + "/price-plans/compare-all/" + smartMeterId + ">Compare Plans</a><br/>(/price-plans/compare-all/:smartMeterId)</li>" +
-        "<ol>"
+    var smartMeterId = "smart-meter-1"
+    const select = document.getElementById('meters');
+    const apiList = document.getElementById("api-list")
+    const selectedMeter = document.getElementById("selected-meter")
+
+    getData(baseURL + "/meters/")
+        .then(response => {
+            let obj = response
+            Object.entries(obj).forEach(([key, value], index) => {
+                let option = document.createElement('option');
+                option.text = option.text = key;
+                option.value = value
+                option.selected = index == 0
+                select.add(option);
+            });
+            showAPIList()
+        });
+
+    select.addEventListener("change", () => {
+        showAPIList()
+    });
+
+    showAPIList = () => {
+        let selection = select.options[select.selectedIndex]
+        smartMeterId = selection.value
+        selectedMeter.innerHTML = "Selected: "+ select.options[select.selectedIndex].text + "(" + smartMeterId + ")"
+        apiList.innerHTML =
+            "<ol>" +
+            "<li><a class =\"api\" href=\"#\" onclick=\"return storeReadings();\">Store Readings</a><br/>(POST: /readings/store)</li>" +
+            "<li><a class =\"api\" target=\"_blank\" href=" + baseURL + "/readings/read/" + smartMeterId + ">Read Readings</a><br/>(GET: /readings/read/:smartMeterId)</li>" +
+            "<li><a class =\"api\" target=\"_blank\" href=" + baseURL + "/price-plans/recommend/" + smartMeterId + ">Recommend Plans</a><br/>(GET: /price-plans/recommend/:smartMeterId)</li>" +
+            "<li><a class =\"api\" target=\"_blank\" href=" + baseURL + "/price-plans/compare-all/" + smartMeterId + ">Compare Plans</a><br/>(GET: /price-plans/compare-all/:smartMeterId)</li>" +
+            "<ol>"
+    }
 
     async function postData(url = '', data = {}) {
         const response = await fetch(url, {
@@ -90,9 +123,25 @@
         return response.json();
     }
 
+    async function getData(url = '') {
+        const response = await fetch(url, {
+            method: 'GET',
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            redirect: 'follow',
+            referrerPolicy: 'no-referrer',
+        });
+        // Parse as JSON
+        return response.json();
+    }
+
     storeReadings = () => {
         let meaterReadings = {
-            "smartMeterId": "smart-meter-0",
+            "smartMeterId": smartMeterId,
             "electricityReadings": [
                 { "time": 1606636800, "reading": 0.0503 },
                 { "time": 1606636860, "reading": 0.0621 },

@@ -1,5 +1,6 @@
 const express = require("express");
 const { readings } = require("./readings/readings");
+const { meters} = require("./meters/meters")
 const { readingsData } = require("./readings/readings.data");
 const { read, store } = require("./readings/readings-controller");
 const { recommend, compare } = require("./price-plans/price-plans-controller");
@@ -25,6 +26,11 @@ app.get("/price-plans/recommend/:smartMeterId", (req, res) => {
 
 app.get("/price-plans/compare-all/:smartMeterId", (req, res) => {
     res.send(compare(getReadings, req));
+});
+
+//Internal API to get list of meters
+app.get("/meters", (req, res) => {
+    res.send(meters);
 });
 
 // Show Static site on home
