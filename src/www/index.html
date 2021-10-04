@@ -1,3 +1,4 @@
+@@ -0,0 +1,246 @@
 <!DOCTYPE html>
 <html>
 
@@ -38,6 +39,20 @@
             color: #03c991;
         }
 
+        .blink {
+            animation: blinker 1s 4 linear;
+        }
+
+        @keyframes blinker {
+            50% {
+                opacity: 0.3;
+            }
+        }
+
+        #clock {
+            color: #0b72bb;
+        }
+
         .content {
             width: 500px;
             margin: 20px;
@@ -62,24 +77,40 @@
 <body>
     <h2>Welcome to JOI Energy REST API ⚡ </h1>
         <div class="content">
-            <label for="meters">Choose a Meter: </label>
+            <!-- Option to choose meter-->
+            <h3>Choose a Meter: </h3>
             <select id="meters"></select>
-            <p id="selected-meter">Selected Meter</p>
+            <label for="meters" id="clock"></label>
+
+            <!-- Available APIs for Selected Meter-->
             <h3>Available API 💡</h3>
+            <p id="selected-meter">Selected Meter</p>
             <p id="api-list" />
+
+            <!-- Available APIs for Selected Meter-->
             <h3>Experimental API ⚗️</h3>
             <p id="beta-api" />
         </div>
 </body>
 
 <script>
+    // Views
     const baseURL = window.location.origin
-    var smartMeterId = "smart-meter-1"
     const select = document.getElementById('meters');
     const apiList = document.getElementById("api-list")
     const newAPI = document.getElementById("beta-api")
+    const clock = document.getElementById("clock")
     const selectedMeter = document.getElementById("selected-meter")
 
+    // Global Const
+    const SECOND_AS_MILLISECOND = 1000
+    const UPLOAD_READING_INTERVAL = 10 * SECOND_AS_MILLISECOND //Milli Seconds
+
+    // State
+    var smartMeterId = "smart-meter-1"
+    var meterTimer, timeNow = new Date(), timeThen = new Date();
+
+    // Get list of meters and initaialize UI
     getData(baseURL + "/meters/")
         .then(response => {
             let obj = response
@@ -103,7 +134,7 @@
         selectedMeter.innerHTML = "Selected: " + select.options[select.selectedIndex].text + "(" + smartMeterId + ")"
         apiList.innerHTML =
             "<ol>" +
-            "<li><a class =\"api\" href=\"#\" onclick=\"return storeReadings();\">Store Readings</a><br/>(POST: /readings/store)</li>" +
+            "<li><a class =\"api\" id = \"store\" href=\"#\" onclick=\"return storeRandomReadings();\">Store Readings</a><br/>(POST: /readings/store)</li>" +
             "<li><a class =\"api\" target=\"_blank\" href=" + baseURL + "/readings/read/" + smartMeterId + ">Read Readings</a><br/>(GET: /readings/read/:smartMeterId)</li>" +
             "<li><a class =\"api\" target=\"_blank\" href=" + baseURL + "/price-plans/recommend/" + smartMeterId + ">Recommend Plans</a><br/>(GET: /price-plans/recommend/:smartMeterId)</li>" +
             "<li><a class =\"api\" target=\"_blank\" href=" + baseURL + "/price-plans/compare-all/" + smartMeterId + ">Compare Plans</a><br/>(GET: /price-plans/compare-all/:smartMeterId)</li>" +
@@ -114,6 +145,7 @@
             "<ol>"
     }
 
+    // Create a POST request
     async function postData(url = '', data = {}) {
         const response = await fetch(url, {
             method: 'POST',
@@ -131,6 +163,7 @@
         return response.json();
     }
 
+    // Create a GET request
     async function getData(url = '') {
         const response = await fetch(url, {
             method: 'GET',
@@ -147,23 +180,68 @@
         return response.json();
     }
 
-    storeReadings = () => {
-        let meaterReadings = {
-            "smartMeterId": smartMeterId,
-            "electricityReadings": [
-                { "time": 1606636800, "reading": 0.0503 },
-                { "time": 1606636860, "reading": 0.0621 },
-                { "time": 1606636920, "reading": 0.0222 },
-                { "time": 1606636980, "reading": 0.0423 },
-                { "time": 1606637040, "reading": 0.0191 }]
-        }
+    /**
+     * Generate n number of random reading values
+     * by default create 1 new reading value
+     */
+    generateRandomData = (dataPoint = 1) => {
+        const maxMeterReading = 2
+        let meaterReadings = [...new Array(dataPoint)].map((reading, index) => ({
+            time: timeNow - index * 3600,
+            reading: Math.random() * maxMeterReading,
+        }))
 
-        postData(baseURL + "/readings/store/", meaterReadings)
+        let meterData = {
+            "smartMeterId": smartMeterId,
+            "electricityReadings": meaterReadings
+        }
+        return meterData
+    }
+
+    /**
+     * Store reading date on Server
+     */
+    storeReadings = (readingData) => {
+        postData(baseURL + "/readings/store/", readingData)
             .then(response => {
                 console.log("Readings Stores! response:" + JSON.stringify(response));
             });
     }
 
+    /**
+     * Store random data points on Server
+     */
+    storeRandomReadings = () => {
+        storeReadings(generateRandomData(1))
+    }
+
+    startTimer = () => {
+        timeNow = new Date()
+        // Store a new Value every Minute
+        if ((timeNow - timeThen) >= UPLOAD_READING_INTERVAL) {
+            console.log("Uploading new Meter Reading at: " + timeNow)
+            storeRandomReadings()
+            timeThen = timeNow
+            document.getElementById("store").classList.add("blink");
+            document.getElementById("store").addEventListener("animationend", function () {
+                document.getElementById("store").classList.remove("blink");
+            });
+        }
+        clock.innerHTML = timeNow.getHours() + ":" +
+            formatTime(timeNow.getMinutes()) + ":" +
+            formatTime(timeNow.getSeconds());
+        meterTimer = setTimeout(() => { startTimer() }, SECOND_AS_MILLISECOND);
+    }
+
+    // add a zero in front of numbers<10 ie 11:00:00
+    formatTime = (timeUnit) => {
+        if (timeUnit < 10) {
+            timeUnit = "0" + timeUnit;
+        }
+        return timeUnit;
+    }
+
+    startTimer()
 </script>
 
 </html>
