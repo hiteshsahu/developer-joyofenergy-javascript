@@ -26,7 +26,6 @@ const generateSingle = () => {
     }));
 };
 
-
 /**
  * Generate random (between 0-maxDataCount) readings data points for all meters
  * @returns Key-Value Pair containing meters as key and random reading points as value

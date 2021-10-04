@@ -36,7 +36,7 @@ app.get("/meters", (req, res) => {
 // Show Static site on home
 app.use(express.static(__dirname + '/www'));
 
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 8081;
 app.listen(port);
 
 console.log(`🚀 app listening on port ${port}`);
